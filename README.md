@@ -10,6 +10,17 @@ Welcome to TaskManager! This is a handy app built with React, Node.js, and Mongo
 - **Update Tasks**: Edit existing tasks with ease.
 - **Delete Tasks**: Remove tasks that are no longer needed.
 
+## Screenshots
+
+![Home Page](client/src/Public/ss1.png)
+
+![Add Task Modal](client/src/Public/ss2.png)
+
+![Task List](client/src/Public/ss3.png)
+
+![Task List](client/src/Public/ss4.png)
+
+
 ## Getting Started
 
 Follow these steps to get the project up and running on your local machine.
