@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Creates a new task by sending a POST request to the server.
 export const createTaskApi = async ({ title, date, category, priority }) => {
-  const response = await axios.post("http://localhost:3000/task/create-task", {
+  const response = await axios.post(`${import.meta.env.VITE_SERVER_DOMAIN}/task/create-task`, {
     title,
     date,
     category,
@@ -13,7 +13,7 @@ export const createTaskApi = async ({ title, date, category, priority }) => {
 
 // Fetches all tasks by sending a GET request to the server.
 export const fetchTasksApi = async () => {
-  const response = await axios.get("http://localhost:3000/task/fetch-tasks");
+  const response = await axios.get(`${import.meta.env.VITE_SERVER_DOMAIN}/task/fetch-tasks`);
   return response.data;
 };
 
@@ -21,7 +21,7 @@ export const fetchTasksApi = async () => {
 // Updates an existing task by sending a PATCH request to the server.
 export const updateTaskApi = async ({ id, data }) => {
   try {
-    const response = await axios.patch(`http://localhost:3000/task/update-task/${id}`, data);
+    const response = await axios.patch(`${import.meta.env.VITE_SERVER_DOMAIN}/task/update-task/${id}`, data);
     return response.data;
   } catch (error) {
     console.error("Error updating task:", error);
@@ -32,7 +32,7 @@ export const updateTaskApi = async ({ id, data }) => {
 // delete task
 export const deleteTaskApi = async (id) => {
   try {
-    const response = await axios.delete(`http://localhost:3000/task/delete-task/${id}`);
+    const response = await axios.delete(`${import.meta.env.VITE_SERVER_DOMAIN}/task/delete-task/${id}`);
     return response.data;
   } catch (error) {
     console.error("Error deleting task:", error);

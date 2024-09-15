@@ -3,10 +3,17 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import taskRouter from './router/taskRoutes.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
 
 dotenv.config();
 
 const app = express();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use(express.static(path.resolve(__dirname, 'dist')));
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, {
