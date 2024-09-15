@@ -1,0 +1,9 @@
+:root{
+    font: 1em sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}

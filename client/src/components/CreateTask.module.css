@@ -1,0 +1,191 @@
+.modalBackground {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(31, 41, 55, 0.75); 
+  z-index: 50;
+}
+
+.modalContainer {
+  background-color: white;
+  border-radius: 0.5rem; 
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  padding: 2rem; 
+  width: 100%;
+  max-width: 32rem; 
+  margin: 0.75rem; 
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.titleInput {
+  height: 4rem;
+  width: 100%;
+  border: none;
+  border-radius: 6px;
+  background-color: #e7e5e5;
+  padding-left: 1rem;
+  font-size: 14px;
+  color: rgb(94, 94, 94);
+  font-weight: 500;
+}
+
+.titleInput:focus {
+  outline: none; 
+}
+
+.datePickerContainer {
+  position: relative;
+}
+
+.datePickerModal {
+  width: 330px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  padding: 1rem;
+  z-index: 100;
+}
+
+.dateButton {
+  border: none;
+  border-radius: 16px;
+  background-color: #d4e8ff;
+  cursor: pointer;
+  text-align: left;
+  padding: 9px 14px;
+
+  font-size: 1rem;
+}
+
+.dateButton:hover {
+  background-color: #e0e0e0;
+}
+
+.categoryButton {
+  padding: 9px 14px;
+
+  border-radius: 18px;
+  border: none;
+  background-color: rgb(224, 235, 255);
+}
+
+.formChildFlex {
+  width: 100%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.formSubmit {
+  padding: 9px 14px;
+  border-radius: 18px;
+  border: none;
+  background-color: rgb(240, 180, 17);
+  font-size: 15px;
+}
+
+.formSubmit:hover {
+  background-color: rgb(248, 191, 34);
+}
+
+.categoryPickerContainer {
+  position: relative;
+}
+
+.categoryButton {
+  border: none;
+  border-radius: 16px;
+  background-color: #d4e8ff;
+  cursor: pointer;
+  text-align: left;
+  padding: 9px 14px;
+
+  font-size: 1rem;
+  width: 100%; 
+}
+
+.categoryButton:hover {
+  background-color: #e0e0e0;
+}
+
+.categoryDropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  z-index: 100;
+  width: 100%; 
+  min-width: 200px; 
+}
+
+.categoryDropdown div {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.categoryDropdown div:hover {
+  background-color: #f0f0f0;
+}
+
+.priorityPickerContainer {
+  position: relative;
+}
+
+.priorityButton {
+  border: none;
+  border-radius: 16px;
+  background-color: #d4e8ff;
+  cursor: pointer;
+  text-align: left;
+  padding: 9px 14px;
+
+  font-size: 1rem;
+  width: 100%; 
+}
+
+.priorityButton:hover {
+  background-color: #e0e0e0;
+}
+
+.priorityDropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  z-index: 100;
+  width: 100%; 
+  min-width: 200px;
+}
+
+.priorityDropdown div {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.priorityDropdown div:hover {
+  background-color: #f0f0f0;
+}
