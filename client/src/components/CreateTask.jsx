@@ -1,198 +1,184 @@
+// CreateTask.js
 import styles from "./CreateTask.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Datepicker from "./Datepicker";
-import { createTask } from "../features/task/taskSlice";
+import { createTask, updateTask } from "../features/task/taskSlice";
 import CreateCategoryModal from "./CreateCategoryModal";
 
-function CreateTask({ onClose }) {
-  
-  // State to manage the visibility of various dropdowns and modals
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
-  const [showPriorityDropdown, setShowPriorityDropdown] = useState(false);
-  const [showCreateCategoryModal, setShowCreateCategoryModal] = useState(false);
+function CreateTask({ onClose, initialData }) {
+    const [showDatePicker, setShowDatePicker] = useState(false);
+    const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
+    const [showPriorityDropdown, setShowPriorityDropdown] = useState(false);
+    const [showCreateCategoryModal, setShowCreateCategoryModal] = useState(false);
 
-  // Redux dispatch function to dispatch actions
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
+    const datePickerRef = useRef(null);
 
-  // Ref to manage the date picker modal
-  const datePickerRef = useRef(null);
+    const [formData, setFormData] = useState({
+        title: "",
+        category: "",
+        priority: "",
+        date: new Date(),
+    });
 
-  // State to manage form data
-  const [formData, setFormData] = useState({
-    title: "",
-    category: "",
-    priority: "",
-    date: new Date(),
-  });
+    useEffect(() => {
+        if (initialData) {
+            setFormData({
+                title: initialData.title,
+                category: initialData.category,
+                priority: initialData.priority,
+                date: initialData.date ? new Date(initialData.date) : new Date(),
+            });
+        }
+    }, [initialData]);
 
-  const { title, date, category, priority } = formData;
+    const { title, date, category, priority } = formData;
+    const { categories } = useSelector((state) => state.task);
+    const priorities = ["Low", "Medium", "High"];
 
-  // Get categories from the Redux store
-  const { categories } = useSelector((state) => state.task);
-
-  // Predefined priorities
-  const priorities = ["Low", "Medium", "High"];
-
-  // Handle input changes for the form
-  const onChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  // Handle date changes from the date picker
-  const onDateChange = (date) => {
-    setFormData({ ...formData, date });
-  };
-
-  // Handle category selection
-  const onCategoryChange = (category) => {
-    setFormData({ ...formData, category: category || null });
-    setShowCategoryDropdown(false);
-  };
-
-  // Handle priority selection
-  const onPriorityChange = (priority) => {
-    setFormData({ ...formData, priority: priority || null });
-    setShowPriorityDropdown(false);
-  };
-
-  // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const taskData = {
-      ...formData,
-      date: formData.date || null,
-      category: formData.category || null,
-      priority: formData.priority || null,
+    const onChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
     };
-    dispatch(createTask(taskData));
-    onClose();
-  };
 
-  // Handle the "Done" button click in the date picker
-  const handleDoneClick = () => {
-    setShowDatePicker(false);
-  };
+    const onDateChange = (date) => {
+        setFormData({ ...formData, date });
+    };
 
-  // Handle the "Cancel" button click in the date picker
-  const handleCancelClick = () => {
-    setShowDatePicker(false);
-  };
+    const onCategoryChange = (category) => {
+        setFormData({ ...formData, category: category || null });
+        setShowCategoryDropdown(false);
+    };
 
-  // Format the date for display
-  const formatDate = (date) => {
-    if (!date) return "Date";
-    const options = { year: "numeric", month: "long", day: "numeric" };
-    return date.toLocaleDateString(undefined, options);
-  };
+    const onPriorityChange = (priority) => {
+        setFormData({ ...formData, priority: priority || null });
+        setShowPriorityDropdown(false);
+    };
 
-  return (
-    <>
-      <div className={styles.modalBackground} onClick={onClose}>
-        <div
-          className={styles.modalContainer}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <form onSubmit={handleSubmit} className={styles.formContainer}>
-            {/* Input for the task title */}
-            <input
-              className={styles.titleInput}
-              type="text"
-              name="title"
-              value={title}
-              onChange={onChange}
-              placeholder="What is your next task?"
-              required
-            />
-            <div className={styles.formChildFlex}>
-              <div className={styles.datePickerContainer}>
-                {/* Button to toggle the date picker */}
-                <button
-                  type="button"
-                  onClick={() => setShowDatePicker(!showDatePicker)}
-                  className={styles.dateButton}
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const taskData = {
+            ...formData,
+            date: formData.date || null,
+            category: formData.category || null,
+            priority: formData.priority || null,
+        };
+        if (initialData) {
+            dispatch(updateTask({ id: initialData._id, data: taskData }));
+        } else {
+            dispatch(createTask(taskData));
+        }
+        onClose();
+    };
+
+    const handleDoneClick = () => {
+        setShowDatePicker(false);
+    };
+
+    const handleCancelClick = () => {
+        setShowDatePicker(false);
+    };
+
+    const formatDate = (date) => {
+        if (!date) return "Date";
+        const options = { year: "numeric", month: "long", day: "numeric" };
+        return date.toLocaleDateString(undefined, options);
+    };
+
+    return (
+        <>
+            <div className={styles.modalBackground} onClick={onClose}>
+                <div
+                    className={styles.modalContainer}
+                    onClick={(e) => e.stopPropagation()}
                 >
-                  {formatDate(date)}
-                </button>
-
-                {/* Date picker modal */}
-                {showDatePicker && (
-                  <div className={styles.modalBackground}>
-                    <div className={styles.datePickerModal} ref={datePickerRef}>
-                      <Datepicker
-                        selectedDate={date}
-                        onDateChange={onDateChange}
-                        onDoneClick={handleDoneClick}
-                        onCancelClick={handleCancelClick}
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
-              <div className={styles.categoryPickerContainer}>
-                {/* Button to toggle the category dropdown */}
-                <button
-                  type="button"
-                  onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
-                  className={styles.categoryButton}
-                >
-                  {category || "Category"}
-                </button>
-
-                {/* Category dropdown */}
-                {showCategoryDropdown && (
-                  <div className={styles.categoryDropdown}>
-                    {categories.map((cat, index) => (
-                      <div key={index} onClick={() => onCategoryChange(cat)}>
-                        {cat}
-                      </div>
-                    ))}
-                    <div onClick={() => setShowCreateCategoryModal(true)}>
-                      {" "}
-                      + Create New
-                    </div>
-                  </div>
-                )}
-              </div>
-              <div className={styles.priorityPickerContainer}>
-                {/* Button to toggle the priority dropdown */}
-                <button
-                  type="button"
-                  onClick={() => setShowPriorityDropdown(!showPriorityDropdown)}
-                  className={styles.priorityButton}
-                >
-                  {priority || "Priority"}
-                </button>
-
-                {/* Priority dropdown */}
-                {showPriorityDropdown && (
-                  <div className={styles.priorityDropdown}>
-                    {priorities.map((pri, index) => (
-                      <div key={index} onClick={() => onPriorityChange(pri)}>
-                        {pri}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-              {/* Submit button */}
-              <button type="submit" className={styles.formSubmit}>
-                Add Task
-              </button>
+                    <form onSubmit={handleSubmit} className={styles.formContainer}>
+                        <input
+                            className={styles.titleInput}
+                            type="text"
+                            name="title"
+                            value={title}
+                            onChange={onChange}
+                            placeholder="What is your next task?"
+                            required
+                        />
+                        <div className={styles.formChildFlex}>
+                            <div className={styles.datePickerContainer}>
+                                <button
+                                    type="button"
+                                    onClick={() => setShowDatePicker(!showDatePicker)}
+                                    className={styles.dateButton}
+                                >
+                                    {formatDate(date)}
+                                </button>
+                                {showDatePicker && (
+                                    <div className={styles.modalBackground}>
+                                        <div className={styles.datePickerModal} ref={datePickerRef}>
+                                            <Datepicker
+                                                selectedDate={date}
+                                                onDateChange={onDateChange}
+                                                onDoneClick={handleDoneClick}
+                                                onCancelClick={handleCancelClick}
+                                            />
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                            <div className={styles.categoryPickerContainer}>
+                                <button
+                                    type="button"
+                                    onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
+                                    className={styles.categoryButton}
+                                >
+                                    {category || "Category"}
+                                </button>
+                                {showCategoryDropdown && (
+                                    <div className={styles.categoryDropdown}>
+                                        {categories.map((cat, index) => (
+                                            <div key={index} onClick={() => onCategoryChange(cat)}>
+                                                {cat}
+                                            </div>
+                                        ))}
+                                        <div onClick={() => setShowCreateCategoryModal(true)}>
+                                            {" "}
+                                            + Create New
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                            <div className={styles.priorityPickerContainer}>
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPriorityDropdown(!showPriorityDropdown)}
+                                    className={styles.priorityButton}
+                                >
+                                    {priority || "Priority"}
+                                </button>
+                                {showPriorityDropdown && (
+                                    <div className={styles.priorityDropdown}>
+                                        {priorities.map((pri, index) => (
+                                            <div key={index} onClick={() => onPriorityChange(pri)}>
+                                                {pri}
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                            <button type="submit" className={styles.formSubmit}>
+                                {initialData ? "Update Task" : "Add Task"}
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-          </form>
-        </div>
-      </div>
-      {/* Modal for creating a new category */}
-      {showCreateCategoryModal && (
-        <CreateCategoryModal
-          onClose={() => setShowCreateCategoryModal(false)}
-          onCategoryCreate={onCategoryChange}
-        />
-      )}
-    </>
-  );
+            {showCreateCategoryModal && (
+                <CreateCategoryModal
+                    onClose={() => setShowCreateCategoryModal(false)}
+                    onCategoryCreate={onCategoryChange}
+                />
+            )}
+        </>
+    );
 }
 
 export default CreateTask;

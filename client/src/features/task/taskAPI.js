@@ -28,3 +28,15 @@ export const updateTaskApi = async ({ id, data }) => {
     throw error;
   }
 };
+
+// delete task
+export const deleteTaskApi = async (id) => {
+  try {
+    const response = await axios.delete(`http://localhost:3000/task/delete-task/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting task:", error);
+    throw error;
+  }
+};
+

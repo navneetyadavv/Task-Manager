@@ -1,17 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { createTaskApi, fetchTasksApi, updateTaskApi } from "./taskAPI";
+import { createTaskApi, fetchTasksApi, updateTaskApi, deleteTaskApi } from "./taskAPI";
 
 // Default categories that are always present
 const defaultCategories = ["All", "Work", "Wishlist", "Personal", "Birthday"];
 
-// function to update categories when creating a task
+// Function to update categories when creating a task
 const updateCategories = (state, newCategory) => {
   if (newCategory && !state.categories.includes(newCategory)) {
     state.categories.push(newCategory);
   }
 };
 
-// function to calculate categories from the fetched tasks
+// Function to calculate categories from the fetched tasks
 const calculateCategoriesFromTasks = (tasks) => {
   const categories = [...defaultCategories];
   tasks.forEach((task) => {
@@ -28,8 +28,22 @@ export const createTask = createAsyncThunk(
   async ({ title, date, category, priority }, { dispatch, rejectWithValue }) => {
     try {
       const newTask = await createTaskApi({ title, date, category, priority });
-      dispatch(fetchTasks())
+      dispatch(fetchTasks());
       return newTask;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// Delete task
+export const deleteTask = createAsyncThunk(
+  "task/deleteTask",
+  async (id, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await deleteTaskApi(id);
+      dispatch(fetchTasks());
+      return response;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -39,7 +53,7 @@ export const createTask = createAsyncThunk(
 // Fetch tasks 
 export const fetchTasks = createAsyncThunk(
   "task/fetchTasks",
-  async (_, { dispatch, rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
       const tasks = await fetchTasksApi();
       return tasks;
@@ -52,7 +66,7 @@ export const fetchTasks = createAsyncThunk(
 // Update task 
 export const updateTask = createAsyncThunk(
   "task/updateTask",
-  async ({ id, data }, { dispatch, rejectWithValue }) => {
+  async ({ id, data }, { rejectWithValue }) => {
     try {
       const updatedTask = await updateTaskApi({ id, data });
       return updatedTask;
@@ -113,6 +127,18 @@ const taskSlice = createSlice({
         }
       })
       .addCase(updateTask.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(deleteTask.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteTask.fulfilled, (state, action) => {
+        state.loading = false;
+        state.tasks = state.tasks.filter((task) => task._id !== action.meta.arg);
+      })
+      .addCase(deleteTask.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

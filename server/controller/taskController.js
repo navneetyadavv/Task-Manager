@@ -59,3 +59,18 @@ export const updateTask = async (req, res) => {
     });
   }
 };
+
+// Controller to delete an task
+export const deleteTask = async (req, res) => {
+  try {
+    const id = req.params.id;
+    
+    await Task.findByIdAndDelete(id);
+
+    res.status(200).json({ message: 'Task deleted successfully' });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message,
+    });
+  }
+};
