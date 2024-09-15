@@ -130,6 +130,9 @@
 }
 
 @media (max-width: 480px) {
+    .header {
+        font-size: 1rem;
+    }
     .contentContainer {
         padding: .5rem;
     }
