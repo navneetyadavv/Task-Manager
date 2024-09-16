@@ -52,7 +52,8 @@ Make sure you have the following installed:
 4. **Clone the Repository**:
 - Open the .env file in the client directory using your preferred text editor.
 - Update the value of VITE_SERVER_DOMAIN to point to the local server:
-    ```sh
+
+  ```jsx
     VITE_SERVER_DOMAIN=http://localhost:3000
     ```
 
