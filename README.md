@@ -5,7 +5,7 @@ Welcome to TaskManager! This is a handy app built with React, Node.js, and Mongo
 ## Features
 
 - **Organize Your Tasks**: Tasks are sorted into "Today", "Upcoming", and "Past" sections.
-- **Filter Tasks**: Easily filter tasks by categories.
+- **Filter Tasks**: Easily filter tasks by categories. You can also create your own category.
 - **Add New Tasks**: Quickly add new tasks with our simple task creation modal.
 - **Update Tasks**: Edit existing tasks with ease.
 - **Delete Tasks**: Remove tasks that are no longer needed.
