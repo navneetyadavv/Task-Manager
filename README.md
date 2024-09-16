@@ -48,18 +48,25 @@ Make sure you have the following installed:
     ```sh
     npm install
     ```
+    
+4. **Clone the Repository**:
+- Open the .env file in the client directory using your preferred text editor.
+- Update the value of VITE_SERVER_DOMAIN to point to the local server:
+    ```sh
+    VITE_SERVER_DOMAIN=http://localhost:3000
+    ```
 
-4. **Navigate to the Server Directory**:
+5. **Navigate to the Server Directory**:
     ```sh
     cd ../server
     ```
 
-5. **Install Server Dependencies**:
+6. **Install Server Dependencies**:
     ```sh
     npm install
     ```
 
-6. **Start the Server**:
+7. **Start the Server**:
     ```sh
     npm run start
     ```
