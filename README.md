@@ -49,7 +49,7 @@ Make sure you have the following installed:
     npm install
     ```
     
-4. **Clone the Repository**:
+4. **Update the Client Environment:**:
 - Open the .env file in the client directory using your preferred text editor.
 - Update the value of VITE_SERVER_DOMAIN to point to the local server:
 
